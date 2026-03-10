@@ -1,0 +1,50 @@
+package com.gyanMonteiro.gesmed.Mapper;
+
+import com.gyanMonteiro.gesmed.Exceptions.ResourceNotFoundException;
+import com.gyanMonteiro.gesmed.RequestDTO.ProductRequestDTO;
+import com.gyanMonteiro.gesmed.ResponseDTO.ProductCreateResponseDTO;
+import com.gyanMonteiro.gesmed.ResponseDTO.ProductResponseDTO;
+import com.gyanMonteiro.gesmed.entity.Manufacturer;
+import com.gyanMonteiro.gesmed.entity.Product;
+import com.gyanMonteiro.gesmed.repository.ManufacturerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ProductMapper {
+    @Autowired
+    ManufacturerRepository ManufacturerRepository;
+
+    public Product toEntity(ProductRequestDTO dto){
+        Product product = new Product();
+        product.setName(dto.name());
+        product.setSku(dto.sku());
+        product.setUnitofMeasure(dto.unitofMeasure());
+        product.setDosage(dto.dosage());
+        product.setActive(true);
+        Manufacturer manufacturer = ManufacturerRepository.findById(dto.manufacturerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Manufacturer not found"));
+        product.setManufacturer(manufacturer);
+        return product;
+    }
+
+    public ProductResponseDTO toResponse (Product product){
+        return new ProductResponseDTO(
+                product.getId(),
+                product.getName(),
+                product.getSku(),
+                product.getUnitofMeasure(),
+                product.getDosage(),
+                product.getCreatedAt(),
+                product.isActive(),
+                product.getManufacturer().getId(),
+                product.getManufacturer().getName()
+        );
+    }
+
+    public ProductCreateResponseDTO toCreateResponse(Product product){
+        return new ProductCreateResponseDTO(
+                product.getId()
+        );
+    }
+}

@@ -29,7 +29,7 @@ public class ManufacturerService {
 
     public ManufacturerResponseDTO update(UUID id, ManufacturerRequestDTO dto){
         Manufacturer manufacturer = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Manufacturer not found"));
         manufacturer.setName(dto.name());
         manufacturer.setCnpj(dto.cnpj());
         repository.save(manufacturer);
@@ -37,7 +37,7 @@ public class ManufacturerService {
     }
     public ManufacturerResponseDTO findById(UUID id){
         Manufacturer manufacturer = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Manufacturer not found"));
         return mapper.toResponde(manufacturer);
     }
 
