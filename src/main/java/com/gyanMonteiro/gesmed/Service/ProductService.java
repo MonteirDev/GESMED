@@ -28,17 +28,18 @@ public class ProductService {
 
     public ProductResponseDTO update(UUID id, ProductRequestDTO dto){
         Product product = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Manufacturer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         product.setName(dto.name());
         product.setSku(dto.sku());
         product.setUnitofMeasure(dto.unitofMeasure());
         product.setDosage(dto.dosage());
+        repository.save(product);
         return mapper.toResponse(product);
     }
 
     public ProductResponseDTO findById(UUID id){
         Product product = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Manufacturer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         return mapper.toResponse(product);
     }
 }
