@@ -1,0 +1,150 @@
+package com.gyanMonteiro.gesmed.controller;
+
+import com.gyanMonteiro.gesmed.Exceptions.ResourceNotFoundException;
+import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerCreateResponseDTO;
+
+import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerResponseDTO;
+import com.gyanMonteiro.gesmed.Service.ManufacturerService;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(controllers = ManufacturerController.class)
+@AutoConfigureMockMvc(addFilters = false)
+class ManufacturerControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private ManufacturerService service;
+
+    @MockitoBean
+    private JpaMetamodelMappingContext jpaMappingContext;
+
+
+    @Nested
+    @DisplayName("POST /manufacturer")
+    class CreateTests {
+        @Test
+        @DisplayName("Should return 200 with ID when manufacturer is created")
+        void shouldCreateManufacturer() throws Exception {
+            UUID id = UUID.randomUUID();
+            ManufacturerCreateResponseDTO response = new ManufacturerCreateResponseDTO(id);
+
+            when(service.create(any())).thenReturn(response);
+
+            mockMvc.perform(post("/manufacturer")
+                            .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("""
+                        {
+                            "name": "Test Manufacturer",
+                            "cnpj": "12.345.678/0001-99"
+                        }
+                        """))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id").value(id.toString()));
+        }
+    }
+
+    @Nested
+    @DisplayName("GET /manufacturer/{id}")
+    class FindByIdTests {
+
+        @Test
+        @DisplayName("Should return 200 with manufacturer details when found")
+        void shouldReturnManufacturer() throws Exception {
+            UUID id = UUID.randomUUID();
+            ManufacturerResponseDTO response = new ManufacturerResponseDTO(id, "CIMED", "12.345.678/0001-99", LocalDateTime.now(), true);
+
+            when(service.findById(id)).thenReturn(response);
+
+            mockMvc.perform(get("/manufacturer/{id}", id))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id").value(id.toString()))
+                    .andExpect(jsonPath("$.name").value("CIMED"))
+                    .andExpect(jsonPath("$.cnpj").value("12.345.678/0001-99"))
+                    .andExpect(jsonPath("$.active").value(true));
+        }
+
+        @Test
+        @DisplayName("Should return 404 when manufacturer not found")
+        void shouldReturn404WhenNotFound() throws Exception {
+            UUID id = UUID.randomUUID();
+
+            when(service.findById(id)).thenThrow(new ResourceNotFoundException("Manufacturer not found"));
+
+            mockMvc.perform(get("/manufacturer/{id}", id))
+                    .andExpect(status().isNotFound());
+        }
+    }
+
+    @Nested
+    @DisplayName("PUT /manufacturer/{id}")
+    class UpdateTests {
+
+        @Test
+        @DisplayName("Should return 200 with updated data")
+        void shouldUpdateManufacturer() throws Exception {
+            UUID id = UUID.randomUUID();
+            ManufacturerResponseDTO response = new ManufacturerResponseDTO(id, "CIMED", "12.345.678/0001-99", LocalDateTime.now(), true);
+
+            when(service.update(ArgumentMatchers.eq(id), ArgumentMatchers.any())).thenReturn(response);
+
+            mockMvc.perform(put("/manufacturer/{id}", id).with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("""
+                                {
+                                    "name": "CIMED",
+                                    "cnpj": "12.345.678/0001-99"
+                                }
+                                """))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id").value(id.toString()))
+                    .andExpect(jsonPath("$.name").value("CIMED"));
+        }
+
+        @Test
+        @DisplayName("Should return 404 when manufacturer not found on update")
+        void shouldReturn404WhenNotFoundOnUpdate() throws Exception {
+            UUID id = UUID.randomUUID();
+
+            when(service.update(ArgumentMatchers.eq(id), ArgumentMatchers.any())).thenThrow(new ResourceNotFoundException("Manufacturer not found"));
+
+            mockMvc.perform(put("/manufacturer/{id}", id).with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("""
+                                {
+                                    "name": "CIMED",
+                                    "cnpj": "12.345.678/0001-99"
+                                }
+                                """))
+                    .andExpect(status().isNotFound());
+        }
+    }
+}

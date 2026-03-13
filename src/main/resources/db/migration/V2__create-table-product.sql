@@ -7,5 +7,5 @@ CREATE TABLE product(
     created_at timestamp NOT NULL,
     active boolean NOT NULL,
     manufacturer_id UUID NOT NULL ,
-    FOREIGN KEY (manufacturer_id) REFERENCES manufacturer(id) ON DELETE CASCADE,
+    FOREIGN KEY (manufacturer_id) REFERENCES manufacturer(id) ON DELETE CASCADE
 );
