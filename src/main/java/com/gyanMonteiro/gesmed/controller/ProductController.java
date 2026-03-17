@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -37,8 +38,13 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity<Void> deleteProduct(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteProduct(@PathVariable UUID id){
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDTO>> listALL(){
+        return ResponseEntity.ok(service.findAll());
     }
 }
