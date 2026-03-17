@@ -5,6 +5,8 @@ import com.gyanMonteiro.gesmed.ResponseDTO.ProductCreateResponseDTO;
 import com.gyanMonteiro.gesmed.ResponseDTO.ProductResponseDTO;
 import com.gyanMonteiro.gesmed.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductCreateResponseDTO> createProduct(@RequestBody ProductRequestDTO dto){
         ProductCreateResponseDTO response = service.create(dto);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
