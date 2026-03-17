@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,8 +37,13 @@ public class ManufacturerController {
     }
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity<Void> deleteManufacturer(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteManufacturer(@PathVariable UUID id){
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ManufacturerResponseDTO>> listALL(){
+        return ResponseEntity.ok(service.findAll());
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -45,5 +46,12 @@ public class ManufacturerService {
         Manufacturer manufacturer = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Manufacturer not found"));
         repository.delete(manufacturer);
+    }
+
+    public List<ManufacturerResponseDTO> findAll(){
+        return repository.findAll()
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 }
