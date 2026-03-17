@@ -41,5 +41,9 @@ public class ManufacturerService {
         return mapper.toResponse(manufacturer);
     }
 
-    
+    public void delete(UUID id){
+        Manufacturer manufacturer = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Manufacturer not found"));
+        repository.delete(manufacturer);
+    }
 }

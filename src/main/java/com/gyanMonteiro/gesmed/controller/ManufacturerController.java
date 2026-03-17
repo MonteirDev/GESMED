@@ -34,4 +34,10 @@ public class ManufacturerController {
         ManufacturerResponseDTO response = service.update(id, dto);
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Void> deleteManufacturer(@PathVariable UUID id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
