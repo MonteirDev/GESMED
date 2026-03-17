@@ -42,4 +42,10 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         return mapper.toResponse(product);
     }
+
+    public void delete(UUID id){
+        Product product = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        repository.delete(product);
+    }
 }
