@@ -33,12 +33,12 @@ public class ManufacturerService {
         manufacturer.setName(dto.name());
         manufacturer.setCnpj(dto.cnpj());
         repository.save(manufacturer);
-        return mapper.toResponde(manufacturer);
+        return mapper.toResponse(manufacturer);
     }
     public ManufacturerResponseDTO findById(UUID id){
         Manufacturer manufacturer = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Manufacturer not found"));
-        return mapper.toResponde(manufacturer);
+        return mapper.toResponse(manufacturer);
     }
 
     

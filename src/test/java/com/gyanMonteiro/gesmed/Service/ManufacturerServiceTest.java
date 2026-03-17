@@ -96,7 +96,7 @@ class ManufacturerServiceTest {
             ManufacturerResponseDTO expectedResponse = new ManufacturerResponseDTO(id, "Novo nome", "98.765.432/0001-11", entity.getCreatedAt(), true);
 
             when(repository.findById(id)).thenReturn(Optional.of(entity));
-            when(mapper.toResponde(entity)).thenReturn(expectedResponse);
+            when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
             ManufacturerResponseDTO result = service.update(id, updateRequest);
 
@@ -106,7 +106,7 @@ class ManufacturerServiceTest {
 
             verify(repository).findById(id);
             verify(repository).save(entity);
-            verify(mapper).toResponde(entity);
+            verify(mapper).toResponse(entity);
         }
 
         @Test
@@ -135,7 +135,7 @@ class ManufacturerServiceTest {
             ManufacturerResponseDTO expectedResponse = new ManufacturerResponseDTO(id, entity.getName(), entity.getCnpj(), entity.getCreatedAt(), entity.isActive());
 
             when(repository.findById(id)).thenReturn(Optional.of(entity));
-            when(mapper.toResponde(entity)).thenReturn(expectedResponse);
+            when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
             ManufacturerResponseDTO result = service.findById(id);
 
@@ -144,7 +144,7 @@ class ManufacturerServiceTest {
             assertThat(result.name()).isEqualTo("CIMED");
 
             verify(repository).findById(id);
-            verify(mapper).toResponde(entity);
+            verify(mapper).toResponse(entity);
         }
 
         @Test
@@ -154,7 +154,7 @@ class ManufacturerServiceTest {
 
             when(repository.findById(id)).thenReturn(Optional.empty());
 
-            assertThatThrownBy(() -> service.update(id, buildRequest()))
+                assertThatThrownBy(() -> service.findById(id))
                     .isInstanceOf(ResourceNotFoundException.class)
                     .hasMessage("Manufacturer not found");
 

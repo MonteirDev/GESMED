@@ -15,7 +15,7 @@ public class ManufacturerMapper {
         manufacturer.setActive(true);
         return manufacturer;
     }
-    public ManufacturerResponseDTO toResponde (Manufacturer manufacturer){
+    public ManufacturerResponseDTO toResponse (Manufacturer manufacturer){
         return new ManufacturerResponseDTO(
                 manufacturer.getId(),
                 manufacturer.getName(),
