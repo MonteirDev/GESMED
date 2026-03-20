@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -160,6 +161,62 @@ class ManufacturerServiceTest {
 
             verify(repository).findById(id);
             verify(repository, never()).save(any());
+        }
+
+        @Test
+        @DisplayName("Should propagate exception thrown by repository")
+        void repositoryExceptionShouldBePropagated(){
+            UUID id = UUID.randomUUID();
+            when(repository.findById(id)).thenThrow(new RuntimeException("Database error"));
+            assertThrows(RuntimeException.class, () -> service.findById(id));
+        }
+    }
+    @Nested
+    class DeleteTests {
+        @Test
+        @DisplayName("Should call repository.deleteById when deleting manufacturer")
+        void deleteShouldCallDeleteById(){
+            UUID id = UUID.randomUUID();
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setId(id);
+
+            when(repository.findById(id)).thenReturn(Optional.of(manufacturer));
+            service.delete(id);
+            verify(repository, times(1)).delete(manufacturer);
+        }
+    }
+
+    @Nested
+    class FindAllTests {
+        @Test
+        @DisplayName("Should return all manufacturers mapped to DTO")
+        void listAllShouldReturnListMappedToDTO(){
+            Manufacturer m1 = new Manufacturer();
+            m1.setId(UUID.randomUUID());
+
+            Manufacturer m2 = new Manufacturer();
+            m2.setId(UUID.randomUUID());
+
+            List<Manufacturer> manufacturers = List.of(m1, m2);
+            when(repository.findAll()).thenReturn(manufacturers);
+
+            ManufacturerResponseDTO response1 = new ManufacturerResponseDTO(
+                    m1.getId(), "Fabricante A", "11.111.111/0001-11", LocalDateTime.now(), true
+            );
+            ManufacturerResponseDTO response2 = new ManufacturerResponseDTO(
+                    m2.getId(), "Fabricante B", "22.222.222/0001-22", LocalDateTime.now(), true
+            );
+
+            when(mapper.toResponse(m1)).thenReturn(response1);
+            when(mapper.toResponse(m2)).thenReturn(response2);
+
+            List<ManufacturerResponseDTO> result = service.findAll();
+
+            assertEquals(2, result.size());
+
+            verify(repository, times(1)).findAll();
+            verify(mapper, times(1)).toResponse(m1);
+            verify(mapper, times(1)).toResponse(m2);
         }
     }
 }

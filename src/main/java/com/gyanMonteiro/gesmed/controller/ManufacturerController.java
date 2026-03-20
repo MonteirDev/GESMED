@@ -4,6 +4,7 @@ import com.gyanMonteiro.gesmed.RequestDTO.ManufacturerRequestDTO;
 import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerCreateResponseDTO;
 import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerResponseDTO;
 import com.gyanMonteiro.gesmed.Service.ManufacturerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ManufacturerController {
     private ManufacturerService service;
 
     @PostMapping
-    public ResponseEntity<ManufacturerCreateResponseDTO> createManufacturer(@RequestBody ManufacturerRequestDTO dto){
+    public ResponseEntity<ManufacturerCreateResponseDTO> createManufacturer(@Valid @RequestBody ManufacturerRequestDTO dto){
         ManufacturerCreateResponseDTO response = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
