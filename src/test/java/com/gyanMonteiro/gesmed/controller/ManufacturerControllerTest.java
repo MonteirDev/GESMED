@@ -62,13 +62,13 @@ class ManufacturerControllerTest {
 
             mockMvc.perform(post("/manufacturer")
                             .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("""
-                        {
-                            "name": "Test Manufacturer",
-                            "cnpj": "12.345.678/0001-99"
-                        }
-                        """))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("""
+                                    {
+                                        "name": "Test Manufacturer",
+                                        "cnpj": "12.345.678/0001-99"
+                                    }
+                                    """))
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.id").value(id.toString()));
         }
@@ -81,21 +81,21 @@ class ManufacturerControllerTest {
             when(service.create(any())).thenReturn(response);
 
             mockMvc.perform(post("/manufacturer")
-                    .with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("""
-                        {
-                            "name": "Test Manufacturer",
-                            "cnpj": "1234567800019X"
-                        }
-                        """))
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("""
+                                    {
+                                        "name": "Test Manufacturer",
+                                        "cnpj": "1234567800019X"
+                                    }
+                                    """))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.cnpj").value("CNPJ deve conter 14 dígitos"));
         }
 
         @Test
         @DisplayName("Should return 400 when required field is missing")
-        void shouldReturn400WhenRequiredFieldIsMissing() throws Exception{
+        void shouldReturn400WhenRequiredFieldIsMissing() throws Exception {
             UUID id = UUID.randomUUID();
             ManufacturerCreateResponseDTO response = new ManufacturerCreateResponseDTO(id);
 
@@ -105,10 +105,10 @@ class ManufacturerControllerTest {
                             .with(csrf())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content("""
-                        {
-                            "name": "Test Manufacturer"
-                        }
-                        """))
+                                    {
+                                        "name": "Test Manufacturer"
+                                    }
+                                    """))
                     .andExpect(status().isBadRequest());
         }
     }
@@ -158,13 +158,13 @@ class ManufacturerControllerTest {
             when(service.update(ArgumentMatchers.eq(id), ArgumentMatchers.any())).thenReturn(response);
 
             mockMvc.perform(put("/manufacturer/{id}", id).with(csrf())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("""
-                                {
-                                    "name": "CIMED",
-                                    "cnpj": "12.345.678/0001-99"
-                                }
-                                """))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("""
+                                    {
+                                        "name": "CIMED",
+                                        "cnpj": "12.345.678/0001-99"
+                                    }
+                                    """))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.id").value(id.toString()))
                     .andExpect(jsonPath("$.name").value("CIMED"));
@@ -180,11 +180,11 @@ class ManufacturerControllerTest {
             mockMvc.perform(put("/manufacturer/{id}", id).with(csrf())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content("""
-                                {
-                                    "name": "CIMED",
-                                    "cnpj": "12.345.678/0001-99"
-                                }
-                                """))
+                                    {
+                                        "name": "CIMED",
+                                        "cnpj": "12.345.678/0001-99"
+                                    }
+                                    """))
                     .andExpect(status().isNotFound());
         }
     }
@@ -194,7 +194,7 @@ class ManufacturerControllerTest {
     class ListAllTests {
         @Test
         @DisplayName("Should return 200 with JSON list of all manufacturers")
-        void shouldReturnAllManufacturers() throws Exception{
+        void shouldReturnAllManufacturers() throws Exception {
             ManufacturerResponseDTO m1 = new ManufacturerResponseDTO(UUID.randomUUID(), "CIMED", "12.345.678/0001-99", LocalDateTime.now(), true);
             ManufacturerResponseDTO m2 = new ManufacturerResponseDTO(UUID.randomUUID(), "NEO QUIMICA", "23.143.678/9254-92", LocalDateTime.now(), true);
             ManufacturerResponseDTO m3 = new ManufacturerResponseDTO(UUID.randomUUID(), "EUROFARMA", "19.386.678/5641-09", LocalDateTime.now(), true);
@@ -217,7 +217,7 @@ class ManufacturerControllerTest {
     class DeleteTests {
         @Test
         @DisplayName("Should return 204 with no body when manufacturer is deleted")
-        void shouldReturn204WhenManufacturerIsDeleted() throws Exception{
+        void shouldReturn204WhenManufacturerIsDeleted() throws Exception {
             UUID id = UUID.randomUUID();
 
             doNothing().when(service).delete(id);

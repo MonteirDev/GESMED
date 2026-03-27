@@ -4,6 +4,7 @@ import com.gyanMonteiro.gesmed.RequestDTO.ProductRequestDTO;
 import com.gyanMonteiro.gesmed.ResponseDTO.ProductCreateResponseDTO;
 import com.gyanMonteiro.gesmed.ResponseDTO.ProductResponseDTO;
 import com.gyanMonteiro.gesmed.Service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -20,7 +21,7 @@ public class ProductController {
     private ProductService service;
 
     @PostMapping
-    public ResponseEntity<ProductCreateResponseDTO> createProduct(@RequestBody ProductRequestDTO dto){
+    public ResponseEntity<ProductCreateResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO dto){
         ProductCreateResponseDTO response = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

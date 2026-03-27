@@ -11,7 +11,7 @@ public record ProductRequestDTO(
         String name,
 
         @NotBlank(message = "SKU is required!")
-        @Pattern(regexp = "[A-Z]+-\\d+", message = "SKU must start with 3 uppercase letters followed by a hyphen and 5 numbers (ex: ABC-12345)")
+        @Pattern(regexp = "^[A-Z]{3}-\\d{5}$", message = "SKU must start with 3 uppercase letters followed by a hyphen and 5 numbers (ex: ABC-12345)")
         String sku,
 
         @NotBlank(message = "Unit of measure is required!")
