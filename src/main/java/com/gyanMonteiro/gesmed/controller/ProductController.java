@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,30 +22,35 @@ public class ProductController {
     private ProductService service;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN','COMPRAS')")
     public ResponseEntity<ProductCreateResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO dto){
         ProductCreateResponseDTO response = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN', 'COMPRAS' ,'CONTRATOS', 'TELEVENDAS')")
     public ResponseEntity<ProductResponseDTO> getProductDetails(@PathVariable UUID id){
         ProductResponseDTO response = service.findById(id);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN', 'COMPRAS')")
     public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable UUID id, @RequestBody ProductRequestDTO dto){
         ProductResponseDTO response = service.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN', 'COMPRAS')")
     public ResponseEntity<Void> deleteProduct(@PathVariable UUID id){
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN', 'COMPRAS' ,'CONTRATOS', 'TELEVENDAS')")
     public ResponseEntity<List<ProductResponseDTO>> listALL(){
         return ResponseEntity.ok(service.findAll());
     }
