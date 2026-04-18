@@ -1,10 +1,9 @@
 package com.gyanMonteiro.gesmed.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gyanMonteiro.gesmed.Exceptions.ResourceNotFoundException;
-import com.gyanMonteiro.gesmed.ResponseDTO.ProductCreateResponseDTO;
-import com.gyanMonteiro.gesmed.ResponseDTO.ProductResponseDTO;
-import com.gyanMonteiro.gesmed.Service.ProductService;
+import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
+import com.gyanMonteiro.gesmed.dto.response.ProductCreateResponseDTO;
+import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
+import com.gyanMonteiro.gesmed.service.ProductService;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;

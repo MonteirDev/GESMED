@@ -1,13 +1,12 @@
 package com.gyanMonteiro.gesmed.controller;
 
-import com.gyanMonteiro.gesmed.RequestDTO.ProductRequestDTO;
-import com.gyanMonteiro.gesmed.ResponseDTO.ProductCreateResponseDTO;
-import com.gyanMonteiro.gesmed.ResponseDTO.ProductResponseDTO;
-import com.gyanMonteiro.gesmed.Service.ProductService;
+import com.gyanMonteiro.gesmed.dto.request.ProductRequestDTO;
+import com.gyanMonteiro.gesmed.dto.response.ProductCreateResponseDTO;
+import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
+import com.gyanMonteiro.gesmed.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

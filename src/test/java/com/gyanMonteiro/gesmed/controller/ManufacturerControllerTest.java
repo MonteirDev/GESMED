@@ -1,12 +1,11 @@
 package com.gyanMonteiro.gesmed.controller;
 
-import com.gyanMonteiro.gesmed.Exceptions.ResourceNotFoundException;
-import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerCreateResponseDTO;
+import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
+import com.gyanMonteiro.gesmed.dto.response.ManufacturerCreateResponseDTO;
 
-import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerResponseDTO;
-import com.gyanMonteiro.gesmed.Service.ManufacturerService;
+import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
+import com.gyanMonteiro.gesmed.service.ManufacturerService;
 
-import jakarta.validation.constraints.Max;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,9 @@
 package com.gyanMonteiro.gesmed.controller;
 
-import com.gyanMonteiro.gesmed.RequestDTO.ManufacturerRequestDTO;
-import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerCreateResponseDTO;
-import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerResponseDTO;
-import com.gyanMonteiro.gesmed.Service.ManufacturerService;
+import com.gyanMonteiro.gesmed.dto.request.ManufacturerRequestDTO;
+import com.gyanMonteiro.gesmed.dto.response.ManufacturerCreateResponseDTO;
+import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
+import com.gyanMonteiro.gesmed.service.ManufacturerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

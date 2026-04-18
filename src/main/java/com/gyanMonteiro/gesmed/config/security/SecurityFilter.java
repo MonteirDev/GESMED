@@ -1,6 +1,5 @@
 package com.gyanMonteiro.gesmed.config.security;
 
-import com.gyanMonteiro.gesmed.Service.UserDetailsServiceImpl;
 import com.gyanMonteiro.gesmed.entity.User;
 import com.gyanMonteiro.gesmed.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {

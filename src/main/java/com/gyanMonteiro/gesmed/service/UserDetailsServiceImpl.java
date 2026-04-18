@@ -1,4 +1,4 @@
-package com.gyanMonteiro.gesmed.Service;
+package com.gyanMonteiro.gesmed.service;
 
 import com.gyanMonteiro.gesmed.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

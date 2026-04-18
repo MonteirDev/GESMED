@@ -1,8 +1,8 @@
-package com.gyanMonteiro.gesmed.Mapper;
+package com.gyanMonteiro.gesmed.mapper;
 
-import com.gyanMonteiro.gesmed.RequestDTO.ManufacturerRequestDTO;
-import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerCreateResponseDTO;
-import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerResponseDTO;
+import com.gyanMonteiro.gesmed.dto.request.ManufacturerRequestDTO;
+import com.gyanMonteiro.gesmed.dto.response.ManufacturerCreateResponseDTO;
+import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
 import org.springframework.stereotype.Component;
 

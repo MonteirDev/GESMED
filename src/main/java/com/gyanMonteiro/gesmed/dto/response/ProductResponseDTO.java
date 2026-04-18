@@ -1,6 +1,4 @@
-package com.gyanMonteiro.gesmed.ResponseDTO;
-
-import com.gyanMonteiro.gesmed.entity.Manufacturer;
+package com.gyanMonteiro.gesmed.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

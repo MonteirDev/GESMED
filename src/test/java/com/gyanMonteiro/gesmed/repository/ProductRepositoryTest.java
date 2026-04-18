@@ -1,7 +1,7 @@
 package com.gyanMonteiro.gesmed.repository;
 
-import com.gyanMonteiro.gesmed.Mapper.ProductMapper;
-import com.gyanMonteiro.gesmed.RequestDTO.ProductRequestDTO;
+import com.gyanMonteiro.gesmed.mapper.ProductMapper;
+import com.gyanMonteiro.gesmed.dto.request.ProductRequestDTO;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
 import com.gyanMonteiro.gesmed.entity.Product;
 import jakarta.persistence.EntityManager;

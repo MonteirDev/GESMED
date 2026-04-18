@@ -1,9 +1,8 @@
 package com.gyanMonteiro.gesmed.controller;
 
-import com.gyanMonteiro.gesmed.RequestDTO.LoginAuthRequestDTO;
-import com.gyanMonteiro.gesmed.RequestDTO.RegisterAuthRequestDTO;
-import com.gyanMonteiro.gesmed.ResponseDTO.LoginResponseDTO;
-import com.gyanMonteiro.gesmed.Service.UserDetailsServiceImpl;
+import com.gyanMonteiro.gesmed.dto.request.LoginAuthRequestDTO;
+import com.gyanMonteiro.gesmed.dto.request.RegisterAuthRequestDTO;
+import com.gyanMonteiro.gesmed.dto.response.LoginResponseDTO;
 import com.gyanMonteiro.gesmed.config.security.JwtService;
 import com.gyanMonteiro.gesmed.entity.User;
 import com.gyanMonteiro.gesmed.enums.Role;

@@ -1,4 +1,4 @@
-package com.gyanMonteiro.gesmed.ResponseDTO;
+package com.gyanMonteiro.gesmed.dto.response;
 
 import java.util.UUID;
 

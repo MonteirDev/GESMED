@@ -1,4 +1,4 @@
-package com.gyanMonteiro.gesmed.RequestDTO;
+package com.gyanMonteiro.gesmed.dto.request;
 
 
 import jakarta.validation.constraints.NotBlank;

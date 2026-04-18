@@ -1,7 +1,7 @@
 package com.gyanMonteiro.gesmed.repository;
 
-import com.gyanMonteiro.gesmed.Mapper.ManufacturerMapper;
-import com.gyanMonteiro.gesmed.RequestDTO.ManufacturerRequestDTO;
+import com.gyanMonteiro.gesmed.mapper.ManufacturerMapper;
+import com.gyanMonteiro.gesmed.dto.request.ManufacturerRequestDTO;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;

@@ -1,10 +1,10 @@
-package com.gyanMonteiro.gesmed.Service;
+package com.gyanMonteiro.gesmed.service;
 
-import com.gyanMonteiro.gesmed.Exceptions.ResourceNotFoundException;
-import com.gyanMonteiro.gesmed.Mapper.ManufacturerMapper;
-import com.gyanMonteiro.gesmed.RequestDTO.ManufacturerRequestDTO;
-import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerCreateResponseDTO;
-import com.gyanMonteiro.gesmed.ResponseDTO.ManufacturerResponseDTO;
+import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
+import com.gyanMonteiro.gesmed.mapper.ManufacturerMapper;
+import com.gyanMonteiro.gesmed.dto.request.ManufacturerRequestDTO;
+import com.gyanMonteiro.gesmed.dto.response.ManufacturerCreateResponseDTO;
+import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
 import com.gyanMonteiro.gesmed.repository.ManufacturerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
