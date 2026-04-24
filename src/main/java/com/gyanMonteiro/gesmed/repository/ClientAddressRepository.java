@@ -1,0 +1,11 @@
+package com.gyanMonteiro.gesmed.repository;
+
+import com.gyanMonteiro.gesmed.entity.ClientAddress;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.UUID;
+
+public interface ClientAddressRepository extends JpaRepository<ClientAddress, UUID> {
+    List<ClientAddress> findByClientId(UUID clientId);
+}
