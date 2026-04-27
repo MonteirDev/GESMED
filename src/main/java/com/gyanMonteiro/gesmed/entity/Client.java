@@ -38,15 +38,4 @@ public class Client {
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClientAddress> addresses = new ArrayList<>();
-
-    public static Client from(ClientRequestDTO dto){
-        Client client = new Client();
-        client.setName(dto.name());
-        client.setCnpj(dto.cnpj());
-        List<ClientAddress> addresses = dto.addresses().stream()
-                .map(addressDto -> ClientAddress.from(addressDto, client))
-                .toList();
-        client.setAddresses(addresses);
-        return client;
-    }
 }

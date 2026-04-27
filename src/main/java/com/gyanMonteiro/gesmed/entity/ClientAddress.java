@@ -58,20 +58,4 @@ public class ClientAddress {
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
-
-
-    public static ClientAddress from(ClientAddressRequestDTO dto, Client client){
-        ClientAddress address = new ClientAddress();
-        address.setLabel(dto.label());
-        address.setStreet(dto.street());
-        address.setNumber(dto.number());
-        address.setComplement(dto.complement());
-        address.setNeighborhood(dto.neighborhood());
-        address.setCity(dto.city());
-        address.setState(dto.state());
-        address.setZipCode(dto.zipCode());
-        address.setMain(dto.isMain());
-        address.setClient(client);
-        return address;
-    }
 }

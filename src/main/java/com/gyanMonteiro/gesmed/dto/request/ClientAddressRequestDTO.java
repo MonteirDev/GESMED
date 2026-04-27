@@ -10,7 +10,6 @@ public record ClientAddressRequestDTO(
         String neighborhood,
         @NotBlank String city,
         @NotBlank String state,
-        @NotBlank String zipCode,
-        boolean isMain
+        @NotBlank String zipCode
 ) {
 }

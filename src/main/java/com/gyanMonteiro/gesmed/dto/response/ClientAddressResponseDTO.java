@@ -18,19 +18,4 @@ public record ClientAddressResponseDTO(
         boolean is_main,
         LocalDateTime createdAt
 ) {
-    public static ClientAddressResponseDTO from(ClientAddress clientAddress){
-        return new ClientAddressResponseDTO(
-                clientAddress.getId(),
-                clientAddress.getLabel(),
-                clientAddress.getStreet(),
-                clientAddress.getNumber(),
-                clientAddress.getComplement(),
-                clientAddress.getNeighborhood(),
-                clientAddress.getCity(),
-                clientAddress.getState(),
-                clientAddress.getZipCode(),
-                clientAddress.isMain(),
-                clientAddress.getCreatedAt()
-        );
-    }
 }

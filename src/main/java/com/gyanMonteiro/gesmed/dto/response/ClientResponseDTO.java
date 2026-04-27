@@ -13,16 +13,4 @@ public record ClientResponseDTO(
         LocalDateTime createdAt,
         List<ClientAddressResponseDTO> addresses
 ) {
-    public static ClientResponseDTO from(Client client){
-        List<ClientAddressResponseDTO> addresses = client.getAddresses().stream()
-                .map(ClientAddressResponseDTO::from)
-                .toList();
-        return new ClientResponseDTO(
-                client.getId(),
-                client.getName(),
-                client.getCnpj(),
-                client.getCreatedAt(),
-                addresses
-        );
-    }
 }
