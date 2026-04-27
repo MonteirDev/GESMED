@@ -1,5 +1,6 @@
 package com.gyanMonteiro.gesmed.mapper;
 
+import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
 import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 import com.gyanMonteiro.gesmed.dto.request.ProductRequestDTO;
 import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
@@ -28,6 +29,12 @@ public class ProductMapper {
     }
 
     public ProductResponseDTO toResponse (Product product){
+        Manufacturer manufacturer = product.getManufacturer();
+        if (manufacturer == null){
+            throw new ResourceNotFoundException(
+                    "Produto id=" + product.getId() + " está sem fabricante associado"
+            );
+        }
         return new ProductResponseDTO(
                 product.getId(),
                 product.getName(),
