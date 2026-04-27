@@ -1,7 +1,6 @@
 package com.gyanMonteiro.gesmed.controller;
 
 import com.gyanMonteiro.gesmed.dto.request.ProductRequestDTO;
-import com.gyanMonteiro.gesmed.dto.response.ProductCreateResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
 import com.gyanMonteiro.gesmed.service.ProductService;
 import jakarta.validation.Valid;
@@ -22,8 +21,8 @@ public class ProductController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN','COMPRAS')")
-    public ResponseEntity<ProductCreateResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO dto){
-        ProductCreateResponseDTO response = service.create(dto);
+    public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO dto){
+        ProductResponseDTO response = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -50,7 +49,12 @@ public class ProductController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN', 'COMPRAS' ,'CONTRATOS', 'TELEVENDAS')")
-    public ResponseEntity<List<ProductResponseDTO>> listALL(){
+    public ResponseEntity<List<ProductResponseDTO>> listALL(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String manufacturerName
+    ){
+        if (name != null) return ResponseEntity.ok(service.findByName(name));
+        if (manufacturerName != null) return ResponseEntity.ok(service.findByManufacturer(manufacturerName));
         return ResponseEntity.ok(service.findAll());
     }
 }

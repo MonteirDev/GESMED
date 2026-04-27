@@ -3,7 +3,6 @@ package com.gyanMonteiro.gesmed.service;
 import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 import com.gyanMonteiro.gesmed.mapper.ProductMapper;
 import com.gyanMonteiro.gesmed.dto.request.ProductRequestDTO;
-import com.gyanMonteiro.gesmed.dto.response.ProductCreateResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
 import com.gyanMonteiro.gesmed.entity.Product;

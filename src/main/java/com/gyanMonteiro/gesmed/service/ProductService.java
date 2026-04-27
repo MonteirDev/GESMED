@@ -1,15 +1,16 @@
 package com.gyanMonteiro.gesmed.service;
 
+import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
 import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 import com.gyanMonteiro.gesmed.mapper.ProductMapper;
 import com.gyanMonteiro.gesmed.dto.request.ProductRequestDTO;
-import com.gyanMonteiro.gesmed.dto.response.ProductCreateResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
 import com.gyanMonteiro.gesmed.entity.Product;
 import com.gyanMonteiro.gesmed.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,10 +22,10 @@ public class ProductService {
     @Autowired
     private ProductMapper mapper;
 
-    public ProductCreateResponseDTO create(ProductRequestDTO dto){
+    public ProductResponseDTO create(ProductRequestDTO dto){
         Product product = mapper.toEntity(dto);
         repository.save(product);
-        return mapper.toCreateResponse(product);
+        return mapper.toResponse(product);
     }
 
     public ProductResponseDTO update(UUID id, ProductRequestDTO dto){
@@ -48,6 +49,19 @@ public class ProductService {
         Product product = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         repository.delete(product);
+    }
+    public List<ProductResponseDTO> findByName(String name){
+        return repository.findByNameIgnoreCase(name)
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
+    }
+
+    public List<ProductResponseDTO> findByManufacturer(String manufacturerName){
+        return repository.findByManufacturerNameIgnoreCase(manufacturerName)
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 
     public List<ProductResponseDTO> findAll(){

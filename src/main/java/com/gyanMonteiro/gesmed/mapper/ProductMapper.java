@@ -2,7 +2,6 @@ package com.gyanMonteiro.gesmed.mapper;
 
 import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 import com.gyanMonteiro.gesmed.dto.request.ProductRequestDTO;
-import com.gyanMonteiro.gesmed.dto.response.ProductCreateResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
 import com.gyanMonteiro.gesmed.entity.Product;
@@ -39,12 +38,6 @@ public class ProductMapper {
                 product.isActive(),
                 product.getManufacturer().getId(),
                 product.getManufacturer().getName()
-        );
-    }
-
-    public ProductCreateResponseDTO toCreateResponse(Product product){
-        return new ProductCreateResponseDTO(
-                product.getId()
         );
     }
 }

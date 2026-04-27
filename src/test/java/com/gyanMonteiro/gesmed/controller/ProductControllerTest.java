@@ -1,7 +1,6 @@
 package com.gyanMonteiro.gesmed.controller;
 
 import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
-import com.gyanMonteiro.gesmed.dto.response.ProductCreateResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
 import com.gyanMonteiro.gesmed.service.ProductService;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
