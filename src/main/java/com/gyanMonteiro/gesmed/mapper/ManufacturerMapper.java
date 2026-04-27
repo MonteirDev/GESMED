@@ -1,7 +1,6 @@
 package com.gyanMonteiro.gesmed.mapper;
 
 import com.gyanMonteiro.gesmed.dto.request.ManufacturerRequestDTO;
-import com.gyanMonteiro.gesmed.dto.response.ManufacturerCreateResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
 import org.springframework.stereotype.Component;
@@ -19,15 +18,14 @@ public class ManufacturerMapper {
         return new ManufacturerResponseDTO(
                 manufacturer.getId(),
                 manufacturer.getName(),
-                manufacturer.getCnpj(),
+                formatCnpj(manufacturer.getCnpj()),
                 manufacturer.getCreatedAt(),
                 manufacturer.isActive()
         );
     }
 
-    public ManufacturerCreateResponseDTO toCreateResponse(Manufacturer manufacturer){
-        return new ManufacturerCreateResponseDTO(
-                manufacturer.getId()
-        );
+    private String formatCnpj(String cnpj) {
+        if (cnpj == null || cnpj.length() != 14) return cnpj;
+        return cnpj.replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3/$4-$5");
     }
 }

@@ -1,10 +1,10 @@
 package com.gyanMonteiro.gesmed.controller;
 
 import com.gyanMonteiro.gesmed.dto.request.ManufacturerRequestDTO;
-import com.gyanMonteiro.gesmed.dto.response.ManufacturerCreateResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
 import com.gyanMonteiro.gesmed.service.ManufacturerService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +22,8 @@ public class ManufacturerController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN','COMPRAS')")
-    public ResponseEntity<ManufacturerCreateResponseDTO> createManufacturer(@Valid @RequestBody ManufacturerRequestDTO dto){
-        ManufacturerCreateResponseDTO response = service.create(dto);
+    public ResponseEntity<ManufacturerResponseDTO> createManufacturer(@Valid @RequestBody ManufacturerRequestDTO dto){
+        ManufacturerResponseDTO response = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -50,7 +50,13 @@ public class ManufacturerController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN', 'COMPRAS')")
-    public ResponseEntity<List<ManufacturerResponseDTO>> listALL(){
+    public ResponseEntity<List<ManufacturerResponseDTO>> listALL(
+            @RequestParam(required = false) String cnpj,
+            @RequestParam(required = false) String name
+
+    ){
+        if (cnpj != null) return ResponseEntity.ok(service.findByCnpj(cnpj));
+        if (name != null) return ResponseEntity.ok(service.findByName(name));
         return ResponseEntity.ok(service.findAll());
     }
 }

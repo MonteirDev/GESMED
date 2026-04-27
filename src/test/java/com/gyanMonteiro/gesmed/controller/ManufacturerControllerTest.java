@@ -55,7 +55,7 @@ class ManufacturerControllerTest {
         @DisplayName("Should return 200 with ID when manufacturer is created")
         void shouldCreateManufacturer() throws Exception {
             UUID id = UUID.randomUUID();
-            ManufacturerCreateResponseDTO response = new ManufacturerCreateResponseDTO(id);
+            ManufacturerResponseDTO response = new ManufacturerResponseDTO(id);
 
             when(service.create(any())).thenReturn(response);
 
