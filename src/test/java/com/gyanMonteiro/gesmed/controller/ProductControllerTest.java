@@ -1,9 +1,9 @@
 package com.gyanMonteiro.gesmed.controller;
 
-import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
-import com.gyanMonteiro.gesmed.service.ProductService;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
+import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
+import com.gyanMonteiro.gesmed.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -41,6 +41,15 @@ class ProductControllerTest {
     @MockitoBean
     private JpaMetamodelMappingContext jpaMappingContext;
 
+
+    private ProductResponseDTO buildResponse(UUID id) {
+        return new ProductResponseDTO(
+                id, "Amoxicilina 500mg","AMX-500-CAP",
+                "Cápsula","500mg",
+                LocalDateTime.now(), true,
+                UUID.randomUUID(), "Laboratório Farmacêutico X"
+        );
+    }
     @Nested
     @DisplayName("POST /product")
     class CreateTests {
@@ -48,7 +57,7 @@ class ProductControllerTest {
         @DisplayName("Should return 200 with ID when manufacturer is created")
         void shouldCreateManufacturer() throws Exception {
             UUID id = UUID.randomUUID();
-            ProductCreateResponseDTO response = new ProductCreateResponseDTO(id);
+            ProductResponseDTO response = buildResponse(id);
 
             when(service.create(any())).thenReturn(response);
 
@@ -72,7 +81,7 @@ class ProductControllerTest {
         @DisplayName("Should return 400 with error message when request body is invalid")
         void shouldReturn400WhenPostBodyIsInvalid() throws Exception {
             UUID id = UUID.randomUUID();
-            ProductCreateResponseDTO response = new ProductCreateResponseDTO(id);
+            ProductResponseDTO response = buildResponse(id);
 
             when(service.create(any())).thenReturn(response);
 
@@ -96,7 +105,7 @@ class ProductControllerTest {
         @DisplayName("Should return 400 when required field is missing")
         void shouldReturn400WhenRequiredFieldIsMissing() throws Exception {
             UUID id = UUID.randomUUID();
-            ProductCreateResponseDTO response = new ProductCreateResponseDTO(id);
+            ProductResponseDTO response = buildResponse(id);
 
             when(service.create(any())).thenReturn(response);
 

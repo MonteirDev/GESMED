@@ -49,7 +49,7 @@ public class ClientService {
     }
 
     public List<ClientResponseDTO> findByCnpj(String cnpj){
-        Client client = repository.findByNameIgnoreCase(cnpj)
+        Client client = repository.findByCnpj(cnpj)
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found"));
         return List.of(mapper.toResponse(client));
     }

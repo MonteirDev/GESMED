@@ -78,23 +78,25 @@ class ProductServiceTest {
         @Test
         @DisplayName("Should create product and return ProductCreateResponseDTO")
         void shouldCreateProduct() {
+            UUID manufacturerId = UUID.randomUUID();
+            LocalDateTime Date = LocalDateTime.of(2026, 5, 19, 16, 30);
             UUID id = UUID.randomUUID();
             ProductRequestDTO request = buildRequest(id);
             Product entity = buildEntity(id);
-            ProductCreateResponseDTO expectedResponse = new ProductCreateResponseDTO(id);
+            ProductResponseDTO expectedResponse = new ProductResponseDTO(id, "Produto 1", "SKU-0001", "ml", "600", Date, true, manufacturerId, "Manufacturer");
 
             when(mapper.toEntity(request)).thenReturn(entity);
             when(repository.save(entity)).thenReturn(entity);
-            when(mapper.toCreateResponse(entity)).thenReturn(expectedResponse);
+            when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-            ProductCreateResponseDTO result = service.create(request);
+            ProductResponseDTO result = service.create(request);
 
             assertThat(result).isNotNull();
             assertThat(result.id()).isEqualTo(id);
 
             verify(mapper).toEntity(request);
             verify(repository).save(entity);
-            verify(mapper).toCreateResponse(entity);
+            verify(mapper).toResponse(entity);
 
 
         }

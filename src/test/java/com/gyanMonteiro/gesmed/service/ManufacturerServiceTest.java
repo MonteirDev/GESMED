@@ -66,21 +66,22 @@ class ManufacturerServiceTest {
         @DisplayName("Should create manufacturer and return ManufacturerCreateResponseDTO")
         void shouldCreateManufacturer() {
             UUID id = UUID.randomUUID();
+            LocalDateTime Date = LocalDateTime.of(2026, 5, 19, 16, 30);
             ManufacturerRequestDTO request = buildRequest();
             Manufacturer entity = buildEntity(id);
-            ManufacturerCreateResponseDTO expectedResponse = new ManufacturerCreateResponseDTO(id);
+            ManufacturerResponseDTO expectedResponse = new ManufacturerResponseDTO(id, "Manufacturer 1", "51.005.516/0001-60", Date, true);
 
             when(mapper.toEntity(request)).thenReturn(entity);
-            when(mapper.toCreateResponse(entity)).thenReturn(expectedResponse);
+            when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-            ManufacturerCreateResponseDTO result = service.create(request);
+            ManufacturerResponseDTO result = service.create(request);
 
             assertThat(result).isNotNull();
             assertThat(result.id()).isEqualTo(id);
 
             verify(mapper).toEntity(request);
             verify(repository).save(entity);
-            verify(mapper).toCreateResponse(entity);
+            verify(mapper).toResponse(entity);
         }
     }
 

@@ -39,16 +39,16 @@ class ManufacturerRepositoryTest {
         String name = "CIMED";
         ManufacturerRequestDTO dto = new ManufacturerRequestDTO(name, cnpj);
         this.createManufacturer(dto);
-        Optional<Manufacturer> result = this.manufacturerRepository.findByName(name);
-        assertThat(result.isPresent()).isTrue();
+        List<Manufacturer> result = this.manufacturerRepository.findByNameIgnoreCase(name);
+        assertThat(result).isNotEmpty();
     }
 
     @Test
     @DisplayName("Should not get Manufacturer from DB when manufacturer not exists")
     void findByNameError() {
         String name = "CIMED";
-        Optional<Manufacturer> result = this.manufacturerRepository.findByName(name);
-        assertThat(result.isEmpty()).isTrue();
+        List<Manufacturer> result = this.manufacturerRepository.findByNameIgnoreCase(name);
+        assertThat(result).isEmpty();
     }
 
     @Test
@@ -93,7 +93,7 @@ class ManufacturerRepositoryTest {
     void findByNameShouldReturnEmptyWhenNoMatch(){
         ManufacturerRequestDTO dto = new ManufacturerRequestDTO("CIMED", "02.814.497/0001-07");
         Manufacturer created = createManufacturer(dto);
-        Optional<Manufacturer> result = this.manufacturerRepository.findByName("NEO QUIMICA");
+        List<Manufacturer> result = this.manufacturerRepository.findByNameIgnoreCase("NEO QUIMICA");
 
         assertThat(result.isEmpty()).isTrue();
     }

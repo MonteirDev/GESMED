@@ -1,5 +1,6 @@
 package com.gyanMonteiro.gesmed.controller;
 
+import com.gyanMonteiro.gesmed.dto.response.ClientResponseDTO;
 import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 
 import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
@@ -46,6 +47,15 @@ class ManufacturerControllerTest {
     @MockitoBean
     private JpaMetamodelMappingContext jpaMappingContext;
 
+    private ManufacturerResponseDTO buildResponse(UUID id) {
+        return new ManufacturerResponseDTO(
+                id,
+                "Hospital das Clínicas",
+                "12.345.678/0001-00",
+                LocalDateTime.now(),
+                true
+        );
+    }
 
     @Nested
     @DisplayName("POST /manufacturer")
@@ -54,7 +64,7 @@ class ManufacturerControllerTest {
         @DisplayName("Should return 200 with ID when manufacturer is created")
         void shouldCreateManufacturer() throws Exception {
             UUID id = UUID.randomUUID();
-            ManufacturerResponseDTO response = new ManufacturerResponseDTO(id);
+            ManufacturerResponseDTO response = buildResponse(id);
 
             when(service.create(any())).thenReturn(response);
 
@@ -74,7 +84,7 @@ class ManufacturerControllerTest {
         @DisplayName("Should return 400 with error message when request body is invalid")
         void shouldReturn400WhenPostBodyIsInvalid() throws Exception {
             UUID id = UUID.randomUUID();
-            ManufacturerCreateResponseDTO response = new ManufacturerCreateResponseDTO(id);
+            ManufacturerResponseDTO response = buildResponse(id);
 
             when(service.create(any())).thenReturn(response);
 
@@ -95,7 +105,7 @@ class ManufacturerControllerTest {
         @DisplayName("Should return 400 when required field is missing")
         void shouldReturn400WhenRequiredFieldIsMissing() throws Exception {
             UUID id = UUID.randomUUID();
-            ManufacturerCreateResponseDTO response = new ManufacturerCreateResponseDTO(id);
+            ManufacturerResponseDTO response = buildResponse(id);
 
             when(service.create(any())).thenReturn(response);
 
