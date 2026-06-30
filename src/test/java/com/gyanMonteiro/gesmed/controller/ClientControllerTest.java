@@ -1,6 +1,8 @@
 package com.gyanMonteiro.gesmed.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gyanMonteiro.gesmed.config.security.JwtService;
+import com.gyanMonteiro.gesmed.config.security.SecurityConfig;
 import com.gyanMonteiro.gesmed.dto.request.ClientAddressRequestDTO;
 import com.gyanMonteiro.gesmed.dto.request.ClientRequestDTO;
 import com.gyanMonteiro.gesmed.dto.response.ClientResponseDTO;
@@ -12,15 +14,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,8 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ClientController.class)
+@Import(SecurityConfig.class)
 @ActiveProfiles("test")
-@EnableAutoConfiguration(exclude = EnableJpaAuditing.class)
 class ClientControllerTest {
 
     @Autowired
@@ -52,8 +52,8 @@ class ClientControllerTest {
     @MockitoBean
     private UserRepository userRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    // ✅ MUDANÇA: Usar o ObjectMapper do MockMvc, não injetar direto
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private ClientRequestDTO buildRequest() {
         ClientAddressRequestDTO address = new ClientAddressRequestDTO(
@@ -77,7 +77,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 201 when client is created")
-        @WithMockUser(roles = "FINANCEIRO")
+        @WithMockUser(roles = "ADMIN")
         void shouldCreateClient() throws Exception {
             UUID id = UUID.randomUUID();
             ClientResponseDTO response = buildResponse(id);
@@ -94,7 +94,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 400 when body is invalid")
-        @WithMockUser(roles = "FINANCEIRO")
+        @WithMockUser(roles = "ADMIN")
         void shouldReturn400WhenBodyIsInvalid() throws Exception {
             ClientRequestDTO invalidRequest = new ClientRequestDTO("", "", List.of());
 
@@ -106,7 +106,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 400 when required field is missing")
-        @WithMockUser(roles = "FINANCEIRO")
+        @WithMockUser(roles = "ADMIN")
         void shouldReturn400WhenRequiredFieldIsMissing() throws Exception {
             String bodyWithoutName = """
                     {
@@ -132,7 +132,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 403 when role is insufficient")
-        @WithMockUser(roles = "EXPEDICAO")
+        @WithMockUser(roles = "USER")
         void shouldReturn403WhenRoleIsInsufficient() throws Exception {
             mockMvc.perform(post("/client")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -150,7 +150,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 200 with client details when found")
-        @WithMockUser(roles = "CONTRATOS")
+        @WithMockUser(roles = "ADMIN")
         void shouldReturnClient() throws Exception {
             UUID id = UUID.randomUUID();
             ClientResponseDTO response = buildResponse(id);
@@ -165,7 +165,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 404 when client not found")
-        @WithMockUser(roles = "CONTRATOS")
+        @WithMockUser(roles = "ADMIN")
         void shouldReturn404WhenNotFound() throws Exception {
             UUID id = UUID.randomUUID();
 
@@ -186,7 +186,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 200 with updated data")
-        @WithMockUser(roles = "FINANCEIRO")
+        @WithMockUser(roles = "ADMIN")
         void shouldUpdateClient() throws Exception {
             UUID id = UUID.randomUUID();
             ClientResponseDTO response = buildResponse(id);
@@ -202,7 +202,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 404 when client not found on update")
-        @WithMockUser(roles = "FINANCEIRO")
+        @WithMockUser(roles = "ADMIN")
         void shouldReturn404WhenNotFoundOnUpdate() throws Exception {
             UUID id = UUID.randomUUID();
 
@@ -225,7 +225,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 204 when client is deleted")
-        @WithMockUser(roles = "FINANCEIRO")
+        @WithMockUser(roles = "ADMIN")
         void shouldReturn204WhenClientIsDeleted() throws Exception {
             UUID id = UUID.randomUUID();
 
@@ -237,7 +237,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 404 when client not found on delete")
-        @WithMockUser(roles = "FINANCEIRO")
+        @WithMockUser(roles = "ADMIN")
         void shouldReturn404WhenNotFoundOnDelete() throws Exception {
             UUID id = UUID.randomUUID();
 
@@ -258,7 +258,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 200 with list of all clients")
-        @WithMockUser(roles = "CONTRATOS")
+        @WithMockUser(roles = "ADMIN")
         void shouldReturnAllClients() throws Exception {
             List<ClientResponseDTO> responses = List.of(
                     buildResponse(UUID.randomUUID()),
@@ -274,7 +274,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 200 filtering by name")
-        @WithMockUser(roles = "CONTRATOS")
+        @WithMockUser(roles = "ADMIN")
         void shouldReturnClientFilteredByName() throws Exception {
             List<ClientResponseDTO> responses = List.of(buildResponse(UUID.randomUUID()));
 
@@ -287,7 +287,7 @@ class ClientControllerTest {
 
         @Test
         @DisplayName("Should return 200 filtering by cnpj")
-        @WithMockUser(roles = "CONTRATOS")
+        @WithMockUser(roles = "ADMIN")
         void shouldReturnClientFilteredByCnpj() throws Exception {
             List<ClientResponseDTO> responses = List.of(buildResponse(UUID.randomUUID()));
 

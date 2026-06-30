@@ -35,7 +35,7 @@ public class ClientController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','FINANCEIRO')")
-    public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable UUID id, @RequestBody ClientRequestDTO dto){
+    public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable UUID id,@Valid @RequestBody ClientRequestDTO dto){
         ClientResponseDTO response = clientService.update(id, dto);
         return ResponseEntity.ok(response);
     }
