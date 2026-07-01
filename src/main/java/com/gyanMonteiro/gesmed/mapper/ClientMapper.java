@@ -4,7 +4,6 @@ import com.gyanMonteiro.gesmed.dto.request.ClientAddressRequestDTO;
 import com.gyanMonteiro.gesmed.dto.request.ClientRequestDTO;
 import com.gyanMonteiro.gesmed.dto.response.ClientAddressResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ClientResponseDTO;
-import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
 import com.gyanMonteiro.gesmed.entity.Client;
 import com.gyanMonteiro.gesmed.entity.ClientAddress;
 import org.springframework.stereotype.Component;
@@ -17,6 +16,7 @@ public class ClientMapper {
         Client client = new Client();
         client.setName(dto.name());
         client.setCnpj(dto.cnpj());
+        client.setActive(true);
 
         List<ClientAddress> addresses = dto.addresses()
                 .stream()
@@ -50,6 +50,7 @@ public class ClientMapper {
                 client.getId(),
                 client.getName(),
                 formatCnpj(client.getCnpj()),
+                client.isActive(),
                 client.getCreatedAt(),
                 address
         );

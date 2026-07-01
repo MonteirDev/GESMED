@@ -1,6 +1,5 @@
 package com.gyanMonteiro.gesmed.entity;
 
-import com.gyanMonteiro.gesmed.dto.request.ClientRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +30,9 @@ public class Client {
 
     @Column(nullable = false)
     private String cnpj;
+
+    @Column(nullable = false)
+    private boolean active;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
