@@ -1,5 +1,7 @@
 package com.gyanMonteiro.gesmed.handler;
 
+import com.gyanMonteiro.gesmed.exceptions.BusinessException;
+import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,5 +24,21 @@ public class GlobalExceptionHandler {
         );
 
         return errors;
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleResouceNotFoundException(ResourceNotFoundException ex){
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return error;
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleBusinessException(BusinessException ex){
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return error;
     }
 }
