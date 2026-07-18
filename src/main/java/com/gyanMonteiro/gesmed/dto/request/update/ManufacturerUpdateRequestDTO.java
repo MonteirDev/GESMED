@@ -1,4 +1,9 @@
 package com.gyanMonteiro.gesmed.dto.request.update;
 
-public record ManufacturerUpdateRequestDTO() {
+import jakarta.validation.constraints.NotBlank;
+
+public record ManufacturerUpdateRequestDTO(
+        @NotBlank(message = "Name is required!")
+        String name
+) {
 }

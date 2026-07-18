@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface ManufacturerRepository extends JpaRepository<Manufacturer, UUID> {
     List<Manufacturer> findByNameIgnoreCase(String name);
-    List<Manufacturer> findByCnpj(String cnpj);
+    Optional<Manufacturer> findByCnpj(String cnpj);
 }

@@ -1,10 +1,10 @@
 package com.gyanMonteiro.gesmed.controller;
 
 import com.gyanMonteiro.gesmed.dto.request.ManufacturerRequestDTO;
+import com.gyanMonteiro.gesmed.dto.request.update.ManufacturerUpdateRequestDTO;
 import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
 import com.gyanMonteiro.gesmed.service.ManufacturerService;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,41 +21,42 @@ public class ManufacturerController {
     private ManufacturerService service;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN','COMPRAS')")
+    @PreAuthorize("hasAnyRole('ADMIN','COMPRAS')")
     public ResponseEntity<ManufacturerResponseDTO> createManufacturer(@Valid @RequestBody ManufacturerRequestDTO dto){
         ManufacturerResponseDTO response = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN', 'COMPRAS')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPRAS')")
     public ResponseEntity<ManufacturerResponseDTO> getManufacturerDetails(@PathVariable UUID id){
         ManufacturerResponseDTO response = service.findById(id);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN', 'COMPRAS')")
-    public ResponseEntity<ManufacturerResponseDTO> updateManufacturer(@PathVariable UUID id, @RequestBody ManufacturerRequestDTO dto){
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPRAS')")
+    public ResponseEntity<ManufacturerResponseDTO> updateManufacturer(@PathVariable UUID id, @RequestBody ManufacturerUpdateRequestDTO dto){
         ManufacturerResponseDTO response = service.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN', 'COMPRAS')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPRAS')")
     public ResponseEntity<Void> deleteManufacturer(@PathVariable UUID id){
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
-    @PreAuthorize("hasRole('ADMIN', 'COMPRAS')")
-    public ResponseEntity<List<ManufacturerResponseDTO>> listALL(
-            @RequestParam(required = false) String cnpj,
-            @RequestParam(required = false) String name
+    @GetMapping("/cnpj/{cnpj}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPRAS')")
+    public ResponseEntity<ManufacturerResponseDTO> listByCnpj(@PathVariable String cnpj){
+        return ResponseEntity.ok(service.findByCnpj(cnpj));
+    }
 
-    ){
-        if (cnpj != null) return ResponseEntity.ok(service.findByCnpj(cnpj));
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPRAS')")
+    public ResponseEntity<List<ManufacturerResponseDTO>> listALL(@RequestParam(required = false) String name){
         if (name != null) return ResponseEntity.ok(service.findByName(name));
         return ResponseEntity.ok(service.findAll());
     }

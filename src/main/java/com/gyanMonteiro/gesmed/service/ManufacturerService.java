@@ -1,5 +1,6 @@
 package com.gyanMonteiro.gesmed.service;
 
+import com.gyanMonteiro.gesmed.dto.request.update.ManufacturerUpdateRequestDTO;
 import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 import com.gyanMonteiro.gesmed.mapper.ManufacturerMapper;
 import com.gyanMonteiro.gesmed.dto.request.ManufacturerRequestDTO;
@@ -26,11 +27,10 @@ public class ManufacturerService {
         return mapper.toResponse(manufacturer);
     }
 
-    public ManufacturerResponseDTO update(UUID id, ManufacturerRequestDTO dto){
+    public ManufacturerResponseDTO update(UUID id, ManufacturerUpdateRequestDTO dto){
         Manufacturer manufacturer = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Manufacturer not found"));
         manufacturer.setName(dto.name());
-        manufacturer.setCnpj(dto.cnpj());
         repository.save(manufacturer);
         return mapper.toResponse(manufacturer);
     }
@@ -46,11 +46,10 @@ public class ManufacturerService {
                 .toList();
     }
 
-    public List<ManufacturerResponseDTO> findByCnpj(String cnpj){
-        return repository.findByCnpj(cnpj)
-                .stream()
-                .map(mapper::toResponse)
-                .toList();
+    public ManufacturerResponseDTO findByCnpj(String cnpj){
+        Manufacturer manufacturer = repository.findByCnpj(cnpj)
+                .orElseThrow(() -> new ResourceNotFoundException("Manufacturer not found"));
+        return mapper.toResponse(manufacturer);
     }
 
     public void delete(UUID id){
