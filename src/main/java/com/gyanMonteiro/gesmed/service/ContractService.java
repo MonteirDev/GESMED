@@ -52,9 +52,10 @@ public class ContractService {
     }
 
     public List<ContractResponseDTO> findByClientId(UUID id){
-        Contract contracts = repository.findByClientId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Contracts not found for client id: " + id));
-        return List.of(mapper.toResponse(contracts));
+        return repository.findByClientId(id)
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 
     public List<ContractResponseDTO> findByStatus(ContractStatus status){
