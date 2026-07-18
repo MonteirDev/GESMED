@@ -28,6 +28,14 @@ public class ProductService {
         }
     }
 
+    public ProductResponseDTO deactivate (UUID id){
+        Product product = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        product.setActive(false);
+        repository.save(product);
+        return mapper.toResponse(product);
+    }
+
     public ProductResponseDTO create(ProductRequestDTO dto){
         Product product = mapper.toEntity(dto);
         validateIntegrity(product);

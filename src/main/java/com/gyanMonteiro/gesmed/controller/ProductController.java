@@ -20,35 +20,42 @@ public class ProductController {
     private ProductService service;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN','COMPRAS')")
+    @PreAuthorize("hasAnyRole('ADMIN','COMPRAS')")
     public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO dto){
         ProductResponseDTO response = service.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN', 'COMPRAS' ,'CONTRATOS', 'TELEVENDAS')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPRAS' ,'CONTRATOS', 'TELEVENDAS')")
     public ResponseEntity<ProductResponseDTO> getProductDetails(@PathVariable UUID id){
         ProductResponseDTO response = service.findById(id);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN', 'COMPRAS')")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable UUID id, @RequestBody ProductRequestDTO dto){
+    @PatchMapping("/{id}/deactivate")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPRAS')")
+    public ResponseEntity<ProductResponseDTO> deactivateProduct(@PathVariable UUID id){
+        ProductResponseDTO response = service.deactivate(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPRAS')")
+    public ResponseEntity<ProductResponseDTO> updateProduct(@Valid @PathVariable UUID id, @RequestBody ProductRequestDTO dto){
         ProductResponseDTO response = service.update(id, dto);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN', 'COMPRAS')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPRAS')")
     public ResponseEntity<Void> deleteProduct(@PathVariable UUID id){
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN', 'COMPRAS' ,'CONTRATOS', 'TELEVENDAS')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPRAS' ,'CONTRATOS', 'TELEVENDAS')")
     public ResponseEntity<List<ProductResponseDTO>> listALL(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String manufacturerName
