@@ -1,5 +1,6 @@
 package com.gyanMonteiro.gesmed.controller;
 
+import com.gyanMonteiro.gesmed.dto.request.ClientAddressRequestDTO;
 import com.gyanMonteiro.gesmed.dto.request.ClientRequestDTO;
 import com.gyanMonteiro.gesmed.dto.response.ClientResponseDTO;
 import com.gyanMonteiro.gesmed.service.ClientService;
@@ -33,7 +34,7 @@ public class ClientController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','FINANCEIRO')")
     public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable UUID id,@Valid @RequestBody ClientRequestDTO dto){
         ClientResponseDTO response = clientService.update(id, dto);
@@ -44,6 +45,27 @@ public class ClientController {
     @PreAuthorize("hasAnyRole('ADMIN','FINANCEIRO')")
     public ResponseEntity<Void> deleteClient(@PathVariable UUID id){
         clientService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/address")
+    @PreAuthorize("hasAnyRole('ADMIN','FINANCEIRO')")
+    public ResponseEntity<ClientResponseDTO> createAddress(@PathVariable UUID id, @Valid @RequestBody ClientAddressRequestDTO dto){
+        ClientResponseDTO response = clientService.addAddress(id, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PatchMapping("/{clientId}/address/{addressId}")
+    @PreAuthorize("hasAnyRole('ADMIN','FINANCEIRO')")
+    public ResponseEntity<ClientResponseDTO> updateAddress(@PathVariable UUID id, @PathVariable UUID clientId, @Valid @RequestBody ClientAddressRequestDTO dto){
+        ClientResponseDTO response = clientService.updateAddress(id, clientId, dto);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{clientId}/address/{addressId}")
+    @PreAuthorize("hasAnyRole('ADMIN','FINANCEIRO')")
+    public ResponseEntity<Void> deleteAddress(@PathVariable UUID clientId, @PathVariable UUID addressId){
+        clientService.deleteAddress(clientId, addressId);
         return ResponseEntity.noContent().build();
     }
 

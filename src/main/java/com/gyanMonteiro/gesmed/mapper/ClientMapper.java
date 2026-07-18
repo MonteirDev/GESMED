@@ -27,7 +27,7 @@ public class ClientMapper {
         return client;
     }
 
-    private ClientAddress toAddressEntity(ClientAddressRequestDTO dto, Client client){
+    public ClientAddress toAddressEntity(ClientAddressRequestDTO dto, Client client){
         ClientAddress address = new ClientAddress();
         address.setLabel(dto.label());
         address.setStreet(dto.street());
