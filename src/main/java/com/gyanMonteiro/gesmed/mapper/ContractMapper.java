@@ -41,7 +41,7 @@ public class ContractMapper {
         ContractItems item = new ContractItems();
         item.setUnitPrice(dto.unitPrice());
         item.setTotalQuantity(dto.totalQuantity());
-        item.setBalanceQuantity(dto.balanceQuantity());
+        item.setBalanceQuantity(dto.totalQuantity());
         Product product = productRepository.findById(dto.productId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         item.setProduct(product);

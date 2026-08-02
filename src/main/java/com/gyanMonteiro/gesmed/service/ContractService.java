@@ -9,12 +9,14 @@ import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 import com.gyanMonteiro.gesmed.mapper.ContractMapper;
 import com.gyanMonteiro.gesmed.repository.ContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class ContractService {
 
     @Autowired
@@ -66,9 +68,10 @@ public class ContractService {
     }
 
     public List<ContractResponseDTO> findByContractNumber(String contractNUmber){
-        Contract contracts = repository.findByContractNumber(contractNUmber)
-                .orElseThrow(() -> new ResourceNotFoundException("Contracts not found with contract number: " + contractNUmber));
-        return List.of(mapper.toResponse(contracts));
+        return repository.findByContractNumber(contractNUmber)
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 
     public ContractResponseDTO setStatusCancelled(UUID id){
