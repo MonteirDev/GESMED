@@ -22,6 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,7 +53,6 @@ class ClientControllerTest {
     @MockitoBean
     private UserRepository userRepository;
 
-    // ✅ MUDANÇA: Usar o ObjectMapper do MockMvc, não injetar direto
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private ClientRequestDTO buildRequest() {
@@ -64,13 +64,15 @@ class ClientControllerTest {
     }
 
     private ClientResponseDTO buildResponse(UUID id) {
-        return new ClientResponseDTO(id, "Hospital das Clínicas",
-                "12.345.678/0001-00", null, List.of());
+        return new ClientResponseDTO(
+                id,
+                "Hospital das Clínicas",
+                "12.345.678/0001-00",
+                true,
+                LocalDateTime.now(),
+                List.of()
+        );
     }
-
-    // =========================================
-    // POST /client
-    // =========================================
 
     @Nested
     class CreateTests {
@@ -141,13 +143,8 @@ class ClientControllerTest {
         }
     }
 
-    // =========================================
-    // GET /client/{id}
-    // =========================================
-
     @Nested
     class FindByIdTests {
-
         @Test
         @DisplayName("Should return 200 with client details when found")
         @WithMockUser(roles = "ADMIN")
@@ -162,7 +159,6 @@ class ClientControllerTest {
                     .andExpect(jsonPath("$.name").value("Hospital das Clínicas"))
                     .andExpect(jsonPath("$.id").value(id.toString()));
         }
-
         @Test
         @DisplayName("Should return 404 when client not found")
         @WithMockUser(roles = "ADMIN")
@@ -176,10 +172,6 @@ class ClientControllerTest {
                     .andExpect(status().isNotFound());
         }
     }
-
-    // =========================================
-    // PUT /client/{id}
-    // =========================================
 
     @Nested
     class UpdateTests {
@@ -216,10 +208,6 @@ class ClientControllerTest {
         }
     }
 
-    // =========================================
-    // DELETE /client/{id}
-    // =========================================
-
     @Nested
     class DeleteTests {
 
@@ -248,10 +236,6 @@ class ClientControllerTest {
                     .andExpect(status().isNotFound());
         }
     }
-
-    // =========================================
-    // GET /client
-    // =========================================
 
     @Nested
     class ListAllTests {

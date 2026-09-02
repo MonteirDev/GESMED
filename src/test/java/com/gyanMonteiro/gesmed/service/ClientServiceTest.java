@@ -2,12 +2,9 @@ package com.gyanMonteiro.gesmed.service;
 
 import com.gyanMonteiro.gesmed.dto.request.ClientAddressRequestDTO;
 import com.gyanMonteiro.gesmed.dto.request.ClientRequestDTO;
-import com.gyanMonteiro.gesmed.dto.request.ProductRequestDTO;
+import com.gyanMonteiro.gesmed.dto.request.update.ClientUpdateRequestDTO;
 import com.gyanMonteiro.gesmed.dto.response.ClientResponseDTO;
-import com.gyanMonteiro.gesmed.dto.response.ProductResponseDTO;
 import com.gyanMonteiro.gesmed.entity.Client;
-import com.gyanMonteiro.gesmed.entity.Manufacturer;
-import com.gyanMonteiro.gesmed.entity.Product;
 import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 import com.gyanMonteiro.gesmed.mapper.ClientMapper;
 import com.gyanMonteiro.gesmed.repository.ClientRepository;
@@ -19,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +24,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -52,6 +48,10 @@ class ClientServiceTest {
         return new ClientRequestDTO("Hospital das Clínicas", "12345678000100", List.of(address));
     }
 
+    private ClientUpdateRequestDTO buildUpdateRequest() {
+        return new ClientUpdateRequestDTO("Hospital das Clínicas");
+    }
+
     private Client buildClient() {
         Client client = new Client();
         client.setName("Hospital das Clínicas");
@@ -61,8 +61,14 @@ class ClientServiceTest {
     }
 
     private ClientResponseDTO buildResponse(UUID id) {
-        return new ClientResponseDTO(id, "Hospital das Clínicas",
-                "12.345.678/0001-00", null, List.of());
+        return new ClientResponseDTO(
+                id,
+                "Hospital das Clínicas",
+                "12.345.678/0001-00",
+                true,
+                LocalDateTime.now(),
+                List.of()
+        );
     }
 
 
@@ -95,7 +101,7 @@ class ClientServiceTest {
         @Test
         @DisplayName("Should update product and return updated ProductResponseDTO")
         void shouldUpdateProduct() {
-            ClientRequestDTO request = buildRequest();
+            ClientUpdateRequestDTO request = buildUpdateRequest();
             Client entity = buildClient();
             UUID id = UUID.randomUUID();
             ClientResponseDTO response = buildResponse(id);
@@ -117,7 +123,7 @@ class ClientServiceTest {
         @DisplayName("Should throw ResourceNotFoundException when id does not exist")
         void shouldThrowExceptionWhenIdNotFoundOnUpdate() throws ResourceNotFoundException {
             UUID id = UUID.randomUUID();
-            ClientRequestDTO request = buildRequest();
+            ClientUpdateRequestDTO request = buildUpdateRequest();
 
             when(repository.findById(id)).thenReturn(Optional.empty());
 

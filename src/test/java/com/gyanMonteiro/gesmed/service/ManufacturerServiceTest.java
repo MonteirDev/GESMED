@@ -1,10 +1,11 @@
 package com.gyanMonteiro.gesmed.service;
 
-import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
-import com.gyanMonteiro.gesmed.mapper.ManufacturerMapper;
 import com.gyanMonteiro.gesmed.dto.request.ManufacturerRequestDTO;
+import com.gyanMonteiro.gesmed.dto.request.update.ManufacturerUpdateRequestDTO;
 import com.gyanMonteiro.gesmed.dto.response.ManufacturerResponseDTO;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
+import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
+import com.gyanMonteiro.gesmed.mapper.ManufacturerMapper;
 import com.gyanMonteiro.gesmed.repository.ManufacturerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,9 +24,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @DataJpaTest
@@ -91,7 +92,7 @@ class ManufacturerServiceTest {
         @DisplayName("Should update manufacturer and return updated ManufacturerResponseDTO")
         void shouldUpdateManufacturer() {
             UUID id = UUID.randomUUID();
-            ManufacturerRequestDTO updateRequest = new ManufacturerRequestDTO("Novo nome", "98.765.432/0001-11");
+            ManufacturerUpdateRequestDTO updateRequest = new ManufacturerUpdateRequestDTO("Novo nome");
             Manufacturer entity = buildEntity(id);
             ManufacturerResponseDTO expectedResponse = new ManufacturerResponseDTO(id, "Novo nome", "98.765.432/0001-11", entity.getCreatedAt(), true);
 
@@ -113,10 +114,11 @@ class ManufacturerServiceTest {
         @DisplayName("Should throw ResourceNotFoundException when id does not exist")
         void shouldThrowExceptionWhenIdNotFoundOnUpdate() throws ResourceNotFoundException {
             UUID id = UUID.randomUUID();
+            ManufacturerUpdateRequestDTO updateRequest = new ManufacturerUpdateRequestDTO("Novo nome");
 
             when(repository.findById(id)).thenReturn(Optional.empty());
 
-            assertThatThrownBy(() -> service.update(id, buildRequest()))
+            assertThatThrownBy(() -> service.update(id, updateRequest))
                     .isInstanceOf(ResourceNotFoundException.class)
                     .hasMessage("Manufacturer not found");
 

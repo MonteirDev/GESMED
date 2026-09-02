@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -26,10 +25,6 @@ class ClientRepositoryTest {
     @Autowired
     ClientRepository clientRepository;
 
-    // =========================================
-    // Helpers
-    // =========================================
-
     private Client createClient(String name, String cnpj) {
         Client client = new Client();
         client.setName(name);
@@ -38,10 +33,6 @@ class ClientRepositoryTest {
         entityManager.persist(client);
         return client;
     }
-
-    // =========================================
-    // findByNameIgnoreCase
-    // =========================================
 
     @Test
     @DisplayName("Should get Client successfully from DB")
@@ -72,10 +63,6 @@ class ClientRepositoryTest {
         assertThat(result).isEmpty();
     }
 
-    // =========================================
-    // findByCnpj
-    // =========================================
-
     @Test
     @DisplayName("Should get Client by CNPJ successfully from DB")
     void findByCnpjSuccess() {
@@ -94,10 +81,6 @@ class ClientRepositoryTest {
 
         assertThat(result).isEmpty();
     }
-
-    // =========================================
-    // findById
-    // =========================================
 
     @Test
     @DisplayName("Should return Client when ID exists")
@@ -121,10 +104,6 @@ class ClientRepositoryTest {
 
         assertThat(result).isEmpty();
     }
-
-    // =========================================
-    // findAll
-    // =========================================
 
     @Test
     @DisplayName("Should return all Clients")
