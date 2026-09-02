@@ -68,9 +68,11 @@ public class ContractController {
     @PreAuthorize("hasAnyRole('ADMIN','CONTRATOS', 'FINANCEIRO', 'TELEVENDAS', 'FATURAMENTO')")
     public ResponseEntity<List<ContractResponseDTO>> listAll(
             @RequestParam(required = false) UUID cliendId,
-            @RequestParam(required = false)ContractStatus status){
+            @RequestParam(required = false)ContractStatus status,
+            @RequestParam(required = false) String contractNumber){
         if (cliendId != null) return ResponseEntity.ok(contractService.findByClientId(cliendId));
         if (status != null) return ResponseEntity.ok(contractService.findByStatus(status));
+        if (contractNumber != null) return ResponseEntity.ok(contractService.findByContractNumber(contractNumber));
         return ResponseEntity.ok(contractService.findAll());
     }
 }

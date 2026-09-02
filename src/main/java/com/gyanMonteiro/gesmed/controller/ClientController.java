@@ -2,6 +2,7 @@ package com.gyanMonteiro.gesmed.controller;
 
 import com.gyanMonteiro.gesmed.dto.request.ClientAddressRequestDTO;
 import com.gyanMonteiro.gesmed.dto.request.ClientRequestDTO;
+import com.gyanMonteiro.gesmed.dto.request.update.ClientUpdateRequestDTO;
 import com.gyanMonteiro.gesmed.dto.response.ClientResponseDTO;
 import com.gyanMonteiro.gesmed.service.ClientService;
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public class ClientController {
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','FINANCEIRO')")
-    public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable UUID id,@Valid @RequestBody ClientRequestDTO dto){
+    public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable UUID id, @Valid @RequestBody ClientUpdateRequestDTO dto){
         ClientResponseDTO response = clientService.update(id, dto);
         return ResponseEntity.ok(response);
     }
