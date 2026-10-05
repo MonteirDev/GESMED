@@ -21,7 +21,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "contracts")
+@Table(name = "contract")
 public class Contract {
 
     @Id

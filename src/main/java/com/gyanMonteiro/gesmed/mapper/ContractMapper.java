@@ -6,10 +6,12 @@ import com.gyanMonteiro.gesmed.dto.response.ClientSummaryResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ContractItemResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ContractResponseDTO;
 import com.gyanMonteiro.gesmed.dto.response.ProductSummaryResponseDTO;
+import com.gyanMonteiro.gesmed.entity.Client;
 import com.gyanMonteiro.gesmed.entity.Contract;
 import com.gyanMonteiro.gesmed.entity.ContractItems;
 import com.gyanMonteiro.gesmed.entity.Product;
 import com.gyanMonteiro.gesmed.enums.ContractStatus;
+import com.gyanMonteiro.gesmed.repository.ClientRepository;
 import com.gyanMonteiro.gesmed.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +25,13 @@ public class ContractMapper {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    ClientRepository clientRepository;
+
     public Contract toEntity(ContractRequestDTO dto){
+        Client client = clientRepository.findById(dto.clientId())
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+
         Contract contract = new Contract();
         contract.setContractNumber(dto.contractNumber());
         contract.setStartDate(LocalDate.parse(dto.startDate()));
@@ -34,6 +42,7 @@ public class ContractMapper {
                 .map(ItemsDto -> toItemEntity(ItemsDto, contract))
                 .toList();
         contract.setContractItems(contractItems);
+        contract.setClient(client);
         return contract;
     }
 
@@ -49,7 +58,7 @@ public class ContractMapper {
         return item;
     }
 
-    public ContractItemResponseDTO toItemResposnse(ContractItems contractItems){
+    public ContractItemResponseDTO toItemResponse(ContractItems contractItems){
         return new ContractItemResponseDTO(
                 contractItems.getId(),
                 new ProductSummaryResponseDTO(
@@ -69,7 +78,7 @@ public class ContractMapper {
     public ContractResponseDTO toResponse(Contract contract){
         List<ContractItemResponseDTO> items = contract.getContractItems()
                 .stream()
-                .map(this::toItemResposnse)
+                .map(this::toItemResponse)
                 .toList();
         return new ContractResponseDTO(
                 contract.getId(),

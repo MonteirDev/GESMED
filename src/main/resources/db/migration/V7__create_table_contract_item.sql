@@ -7,5 +7,5 @@ CREATE TABLE contract_items (
     contract_id UUID NOT NULL,
     product_id UUID NOT NULL,
     FOREIGN KEY (contract_id) REFERENCES contract(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
+    FOREIGN KEY (product_id) REFERENCES product(id)
 )
