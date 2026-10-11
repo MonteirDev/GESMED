@@ -6,6 +6,7 @@ import com.gyanMonteiro.gesmed.dto.response.StockResponseDTO;
 import com.gyanMonteiro.gesmed.entity.Manufacturer;
 import com.gyanMonteiro.gesmed.entity.Product;
 import com.gyanMonteiro.gesmed.entity.Stock;
+import com.gyanMonteiro.gesmed.exceptions.BusinessException;
 import com.gyanMonteiro.gesmed.exceptions.ResourceNotFoundException;
 import com.gyanMonteiro.gesmed.mapper.StockMapper;
 import com.gyanMonteiro.gesmed.repository.ProductRepository;
@@ -35,8 +36,12 @@ public class StockService {
     @Transactional
     public StockResponseDTO createEntry(StockRequestDTO dto) {
         Product product = productRepository.findById(dto.productId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         Manufacturer manufacturer = product.getManufacturer();
+
+        if (repository.existsByBatchNumber(dto.batchNumber())) {
+            throw new BusinessException("Batch number already exists");
+        }
 
         Stock stock = mapper.toEntity(dto, product);
         stock = repository.save(stock);
@@ -72,7 +77,7 @@ public class StockService {
     }
 
     public List<StockResponseDTO> findExpiringSoon(LocalDate limitDate){
-        return repository.findByExpiryDateBefore(limitDate.toString())
+        return repository.findByExpiryDateBefore(limitDate)
                 .stream()
                 .map(mapper::toResponse)
                 .toList();
@@ -92,14 +97,15 @@ public class StockService {
 
             batch.setReserveQuantity(batch.getReserveQuantity() + toReserve);
             repository.save(batch);
+            remaining -= toReserve;
         }
         if (remaining > 0) {
-            throw new RuntimeException("Not enough stock available to reserve the requested quantity.");
+            throw new BusinessException("Not enough stock available to reserve the requested quantity.");
         }
 
         Integer available = repository.findAvailableQuantityByProductId(id).orElse(0);
         return new StockOperationResultDTO(
-                "Reservation released successfully",
+                "Reservation completed successfully",
                 id,
                 quantity,
                 available
@@ -126,7 +132,7 @@ public class StockService {
             remaining -= toRelease;
         }
         if (remaining > 0) {
-            throw new RuntimeException("Not enough reserved stock to release the requested quantity.");
+            throw new BusinessException("Not enough reserved stock to release the requested quantity.");
         }
         Integer available = repository.findAvailableQuantityByProductId(id).orElse(0);
         return new StockOperationResultDTO(
@@ -139,7 +145,7 @@ public class StockService {
 
     @Transactional
     public StockOperationResultDTO dispatchStock(UUID id, Integer quantity){
-        List<Stock> availableBatches = repository.findByProductAndQuantityGreaterThanOrderByExpiryDateAsc(id, 0);
+        List<Stock> availableBatches = repository.findByProductIdAndQuantityGreaterThanOrderByExpiryDateAsc(id, 0);
 
         Integer remaining = quantity;
 
@@ -156,7 +162,7 @@ public class StockService {
             remaining -= toDispatch;
         }
         if (remaining > 0) {
-            throw new RuntimeException("Not enough stock available to dispatch the requested quantity.");
+            throw new BusinessException("Not enough stock available to dispatch the requested quantity.");
         }
 
         Integer available = repository.findAvailableQuantityByProductId(id).orElse(0);

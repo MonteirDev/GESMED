@@ -25,7 +25,7 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "batch_number", nullable = false)
+    @Column(name = "batch_number", nullable = false, unique = true)
     private String batchNumber;
 
     @Column(name = "expiry_date", nullable = false)

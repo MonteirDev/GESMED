@@ -1,6 +1,6 @@
 CREATE TABLE stock (
     id UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
-    batch_number varchar(255) NOT NULL,
+    batch_number varchar(255) NOT NULL UNIQUE ,
     expiry_date date NOT NULL,
     quantity int NOT NULL,
     reserved_quantity int NOT NULL,

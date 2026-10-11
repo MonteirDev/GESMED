@@ -1,6 +1,6 @@
 CREATE TABLE supplier_purchase_history (
     id UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
-    batch_number VARCHAR(255) NOT NULL,
+    batch_number VARCHAR(255) NOT NULL UNIQUE,
     quantity INT NOT NULL,
     unit_price DECIMAL(10, 2) NOT NULL,
     purchase_date TIMESTAMP NOT NULL,
